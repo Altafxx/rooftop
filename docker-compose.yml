@@ -1,0 +1,12 @@
+services:
+  app:
+    image: ghcr.io/altafxx/rooftop:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - API_BASE_URL=${API_BASE_URL:-https://your-api-domain.com}
+      - NEXT_TELEMETRY_DISABLED=1
+    env_file:
+      - .env
+    restart: unless-stopped

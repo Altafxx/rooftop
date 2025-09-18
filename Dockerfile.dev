@@ -1,0 +1,28 @@
+FROM node:18-alpine
+
+# Install dependencies for development
+RUN apk add --no-cache libc6-compat
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json* ./
+
+# Install all dependencies using npm (including dev dependencies)
+RUN npm ci
+
+# Install Bun for runtime
+RUN npm install -g bun
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Set environment
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Start development server using bun
+CMD ["bun", "run", "dev"]
